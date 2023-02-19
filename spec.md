@@ -1,8 +1,8 @@
-# TinyRPC v1 Specification
+# PicoRPC v1 Specification
 
 ## Overview
 
-This document describes the TinyRPC v1 protocol, a remote-procedure-call protocol meant to be very simple, but powerful.
+This document describes the PicoRPC v1 protocol, a remote-procedure-call protocol meant to be very simple, but powerful.
 
 This protocol requires [JSON](https://www.json.org/json-en.html) ([RFC 4627](https://www.ietf.org/rfc/rfc4627.txt)) as the serialization and deserialization format, but you may easily swap that out for something more appropriate for your use case to customize the protocol to your specific needs.
 

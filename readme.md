@@ -1,19 +1,19 @@
-# TinyRPC
+# PicoRPC
 
 A tiny RPC library and [spec](./spec.md), inspired by [JSON-RPC 2.0](https://www.jsonrpc.org/specification) and [tRPC](https://trpc.io).
 
 ## Install
 
 ```sh
-npm install --save tiny-rpc
+npm install --save picorpc
 ```
 
 ## Usage
 
 ```ts
-import {createAbstractClient, createAbstractServer} from 'tiny-rpc';
-import {createMemoryClient, createMemoryServer} from 'tiny-rpc';
-import {createHttpClient, createHttpServer} from 'tiny-rpc';
+import {createAbstractClient, createAbstractServer} from 'picorpc';
+import {createMemoryClient, createMemoryServer} from 'picorpc';
+import {createHttpClient, createHttpServer} from 'picorpc';
 
 // Custom map of procedures to expose to the client
 

@@ -45,7 +45,7 @@ const createTestMemoryClient = context => {
 
 /* MAIN */
 
-describe ( 'TinyRPC', () => {
+describe ( 'PicoRPC', () => {
 
   describe ( 'protocol', it => {
 
