@@ -26,9 +26,9 @@ class Request<T> {
 
   /* API */
 
-  exec (): void {
+  exec (): Promise<T> {
 
-    this.then ();
+    return this.then ();
 
   }
 
