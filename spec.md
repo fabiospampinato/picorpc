@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the TinyRPC v1 protocol, a remote-procedure-call protocol meant to be very simple, but mighty.
+This document describes the TinyRPC v1 protocol, a remote-procedure-call protocol meant to be very simple, but powerful.
 
 This protocol requires [JSON](https://www.json.org/json-en.html) ([RFC 4627](https://www.ietf.org/rfc/rfc4627.txt)) as the serialization and deserialization format, but you may easily swap that out for something more appropriate for your use case to customize the protocol to your specific needs.
 
@@ -66,7 +66,7 @@ Additionally, an unsuccessful response object must have also the following prope
     - `code`
       - An integer number, the identifier for the error.
       - This property is required.
-      - Negative integers are reserved, custom ones must be postiive integeres.
+      - Negative integers are reserved, custom ones must be postive integers.
     - `message`
       - A string describing the error.
       - This property is required.
