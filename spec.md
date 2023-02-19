@@ -32,12 +32,12 @@ A request object has the following properties:
   - This property must be a string.
 - `params`
   - The list of arguments to call the remote procedure with.
-  - The property is optional, so it can be omitted.
-  - The property must be an array.
+  - This property is optional, so it can be omitted.
+  - This property must be an array.
 - `context`
   - An object containing arbitrary data to pass to the remote procedure.
-  - The property is optional, so it can be omitted.
-  - The property must be a plain object, not an array.
+  - This property is optional, so it can be omitted.
+  - This property must be a plain object, not an array.
 
 ## Response
 
