@@ -3,14 +3,14 @@
 
 import {VERSION} from '~/constants';
 import Request from '~/objects/request';
-import {isString} from '~/utils';
+import {isFunction, isString} from '~/utils';
 import type {IProcedures, IAbstractClientOptions, IAbstractClient} from '~/types';
 
 /* MAIN */
 
 const createAbstractClient = <T extends IProcedures> ( options: IAbstractClientOptions ): IAbstractClient<T> => {
 
-  const {handler} = options;
+  const {context, handler} = options;
 
   let client = Object.seal ( Object.freeze ( {} ) ) as IAbstractClient<T>; //TSC
   let id = 0n;
@@ -27,7 +27,8 @@ const createAbstractClient = <T extends IProcedures> ( options: IAbstractClientO
           version: VERSION,
           id: String ( id += 1n ),
           method,
-          params
+          params,
+          context: isFunction ( context ) ? context () : undefined
         });
 
       };

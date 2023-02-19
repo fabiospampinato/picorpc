@@ -1,5 +1,4 @@
 
-//TODO: Support context
 //TODO: Make a bunch of demos, maybe
 
 /* IMPORT */
@@ -19,7 +18,7 @@ import createMemoryServer from '~/servers/memory';
 import createHttpClient from '~/clients/http';
 import createHttpServer from '~/servers/http';
 
-import type {IProcedures, IRequest, IResponse} from '~/types';
+import type {IContext, IProcedures, IRequest, IResponse} from '~/types';
 import type {IAbstractClientOptions, IAbstractServerOptions, IAbstractClient, IAbstractServer} from '~/types';
 import type {IMemoryClientOptions, IMemoryServerOptions, IMemoryClient, IMemoryServer} from '~/types';
 import type {IHttpClientOptions, IHttpServerOptions, IHttpClient, IHttpServer} from '~/types';
@@ -32,7 +31,7 @@ export {createAbstractClient, createAbstractServer};
 export {createMemoryClient, createMemoryServer};
 export {createHttpClient, createHttpServer};
 
-export type {IProcedures, IRequest, IResponse};
+export type {IContext, IProcedures, IRequest, IResponse};
 export type {IAbstractClientOptions, IAbstractServerOptions, IAbstractClient, IAbstractServer};
 export type {IMemoryClientOptions, IMemoryServerOptions, IMemoryClient, IMemoryServer};
 export type {IHttpClientOptions, IHttpServerOptions, IHttpClient, IHttpServer};

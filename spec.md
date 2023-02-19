@@ -34,6 +34,10 @@ A request object must have the following properties:
   - The list of arguments to call the remote procedure with.
   - The property is optional, so it can be omitted.
   - The property must be an array.
+- `context`
+  - An object containing arbitrary data to pass to the remote procedure.
+  - The property is optional, so it can be omitted.
+  - The property must be a plain object, not an array.
 
 ## Response
 
@@ -88,7 +92,8 @@ The following are all the "well known" reserved error codes, along with their re
 | `-4` | `Invalid id`          | Generic error about the format of the id                             |
 | `-5` | `Invalid method`      | Generic error about the format of the method, or procedure not found |
 | `-6` | `Invalid params`      | Generic error about the parameters provided for the procedure        |
-| `-7` | `Failed execution`    | Generic error when executing the procedure                           |
+| `-7` | `Invalid context`     | Generic error about the format of the context                        |
+| `-8` | `Failed execution`    | Generic error when executing the procedure                           |
 
 ## Examples
 

@@ -8,6 +8,9 @@ import {createHttpClient, createHttpServer} from '../dist/index.js';
 /* HELPERS */
 
 const procedures = {
+  ctx () {
+    return this.value;
+  },
   sum ( a, b ) {
     return a + b;
   },
@@ -26,17 +29,17 @@ const procedures = {
   }
 };
 
-const createTestHttpClient = () => {
+const createTestHttpClient = context => {
   const port = 5173;
   const url = `http://localhost:${port}`;
   const server = createHttpServer ({ port, procedures });
-  const client = createHttpClient ({ url });
+  const client = createHttpClient ({ context, url });
   return {client, server};
 };
 
-const createTestMemoryClient = () => {
+const createTestMemoryClient = context => {
   const server = createMemoryServer ({ procedures });
-  const client = createMemoryClient ({ server });
+  const client = createMemoryClient ({ context, server });
   return {client, server};
 };
 
@@ -189,6 +192,19 @@ describe ( 'TinyRPC', () => {
 
     });
 
+    it ( 'errors on invalid context', async t => {
+
+      const {server} = createTestMemoryClient ();
+      const result = ( await server.handle ( { version: '1.0.0', id: '1', method: 'sum', params: [], context: [] } ) ).valueOf ();
+
+      t.is ( result.version, '1.0.0' );
+      t.is ( result.id, '1' );
+      t.is ( result.error.code, -7 );
+      t.is ( result.error.message, 'Invalid context' );
+      t.is ( result.result, undefined );
+
+    });
+
     it ( 'errors on failed execution, with a custom error', async t => {
 
       const {server} = createTestMemoryClient ();
@@ -210,7 +226,7 @@ describe ( 'TinyRPC', () => {
 
       t.is ( result.version, '1.0.0' );
       t.is ( result.id, '1' );
-      t.is ( result.error.code, -7 );
+      t.is ( result.error.code, -8 );
       t.is ( result.error.message, 'Some general error' );
       t.is ( result.error.data, undefined );
       t.is ( result.result, undefined );
@@ -226,6 +242,18 @@ describe ( 'TinyRPC', () => {
       t.is ( result.id, 'foo' );
       t.is ( result.error, undefined );
       t.is ( result.result, 3 );
+
+    });
+
+    it ( 'succeeds on valid request, using the context', async t => {
+
+      const {server} = createTestMemoryClient ();
+      const result = ( await server.handle ( { version: '1.0.0', id: 'foo', method: 'ctx', context: { value: 123 } } ) ).valueOf ();
+
+      t.is ( result.version, '1.0.0' );
+      t.is ( result.id, 'foo' );
+      t.is ( result.error, undefined );
+      t.is ( result.result, 123 );
 
     });
 
@@ -262,6 +290,16 @@ describe ( 'TinyRPC', () => {
 
       });
 
+      it ( 'succeeds on valid request, using the context', async t => {
+
+        const context = () => ({ value: 123 });
+        const {client} = createTestMemoryClient ( context );
+        const result = await client.ctx ()
+
+        t.is ( result, 123 );
+
+      });
+
     });
 
     describe ( 'http', it => {
@@ -292,6 +330,18 @@ describe ( 'TinyRPC', () => {
         const result = await client.sum ( 1, 2 );
 
         t.is ( result, 3 );
+
+        server.close ();
+
+      });
+
+      it ( 'succeeds on valid request, using the context', async t => {
+
+        const context = () => ({ value: 123 });
+        const {client, server} = createTestHttpClient ( context );
+        const result = await client.ctx ()
+
+        t.is ( result, 123 );
 
         server.close ();
 

@@ -6,6 +6,10 @@ import type Response from '~/objects/response';
 
 /* TYPES - OBJECTS */
 
+type IContext = {
+  [K in string]: unknown
+};
+
 type IProcedures = {
   [Method in string]: ( ...params: any[] ) => any
 };
@@ -14,7 +18,8 @@ type IRequest = {
   version: string,
   id: string,
   method: string,
-  params?: unknown[]
+  params?: unknown[],
+  context?: IContext
 };
 
 type IResponseSuccess = {
@@ -42,6 +47,7 @@ type IResponseHandler = ( response: IResponse ) => void;
 /* TYPES - ABSTRACT */
 
 type IAbstractClientOptions = {
+  context?: () => IContext,
   handler: IRequestHandler
 };
 
@@ -61,6 +67,7 @@ type IAbstractServer = {
 /* TYPES - MEMORY */
 
 type IMemoryClientOptions = {
+  context?: () => IContext,
   server: IMemoryServer
 };
 
@@ -75,6 +82,7 @@ type IMemoryServer = IAbstractServer;
 /* TYPES - HTTP */
 
 type IHttpClientOptions = {
+  context?: () => IContext,
   serializer?: ( value: unknown ) => string,
   deserializer?: ( value: string ) => any,
   url: string
@@ -95,7 +103,7 @@ type IHttpServer = IAbstractServer & {
 
 /* EXPORT */
 
-export type {IProcedures, IRequest, IResponse, IRequestHandler, IResponseHandler};
+export type {IContext, IProcedures, IRequest, IResponse, IRequestHandler, IResponseHandler};
 export type {IAbstractClientOptions, IAbstractServerOptions, IAbstractClient, IAbstractServer};
 export type {IMemoryClientOptions, IMemoryServerOptions, IMemoryClient, IMemoryServer};
 export type {IHttpClientOptions, IHttpServerOptions, IHttpClient, IHttpServer};

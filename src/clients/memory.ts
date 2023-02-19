@@ -8,9 +8,10 @@ import type {IProcedures, IMemoryClientOptions, IMemoryClient} from '~/types';
 
 const createMemoryClient = <T extends IProcedures> ( options: IMemoryClientOptions ): IMemoryClient<T> => {
 
-  const {server} = options;
+  const {context, server} = options;
 
   return createAbstractClient<T> ({
+    context,
     handler: server.handle
   });
 

@@ -9,11 +9,12 @@ import type {IProcedures, IHttpClientOptions, IHttpClient} from '~/types';
 
 const createHttpClient = <T extends IProcedures> ( options: IHttpClientOptions ): IHttpClient<T> => {
 
-  const {url} = options;
+  const {context, url} = options;
   const serializer = options.serializer || serialize;
   const deserializer = options.deserializer || deserialize;
 
   return createAbstractClient<T> ({
+    context,
     handler: async request => {
       const response = await fetch ( url, {
         method: 'POST',

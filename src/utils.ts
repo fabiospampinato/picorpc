@@ -49,6 +49,12 @@ const isFinite = ( value: unknown ): value is number => {
 
 };
 
+const isFunction = ( value: unknown ): value is Function => {
+
+  return typeof value === 'function';
+
+};
+
 const isInteger = ( value: unknown ): value is number => {
 
   return typeof value === 'number' && Number.isInteger ( value );
@@ -116,4 +122,4 @@ const rethrow = ( exception: unknown ): never => {
 
 /* EXPORT */
 
-export {attempt, castError, identity, isArray, isError, isFinite, isInteger, isNumber, isObject, isString, isUndefined, isVersionCompatible, noop, rethrow};
+export {attempt, castError, identity, isArray, isError, isFinite, isFunction, isInteger, isNumber, isObject, isString, isUndefined, isVersionCompatible, noop, rethrow};
