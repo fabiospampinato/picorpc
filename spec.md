@@ -133,13 +133,6 @@ Unsuccessful calls:
 <-- { "version": "1.0.0", "id": "1", "error": { "code": -7, "message": "Failed execution" } }
 ```
 
-Malformed back call:
-
-```
---> [ "add", "divide" ]
-<-- { "version": "1.0.0", "id": "", "error": { "code": -1, "message": "Invalid request" } }
-```
-
 ## License
 
 MIT © Fabio Spampinato
