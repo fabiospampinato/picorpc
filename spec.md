@@ -16,7 +16,7 @@ Every property listed is considered to be case-sensitive, any additional non-lis
 
 An RPC call is initiated when the client sends a request object to the server.
 
-A request object must have the following properties:
+A request object has the following properties:
 
 - `version`
   - The version of the protocol used.
@@ -52,7 +52,7 @@ Any response objects must have the following properties:
 - `id`
   - The identifier for this response.
   - This property is required.
-  - This property must have the same value as the `id` property on the correspending request object, unless that property wasn't provided, in which case an empty string will be used instead.
+  - This property must have the same value as the `id` property on the correspending request object, unless that property wasn't provided, in which case an empty string must be used instead.
 
 Additionally, a successful response object must have also the following properties:
 
@@ -91,7 +91,7 @@ The following are all the "well known" reserved error codes, along with their re
 | `-3` | `Unsupported version` | Unsupported protocol version                                         |
 | `-4` | `Invalid id`          | Generic error about the format of the id                             |
 | `-5` | `Invalid method`      | Generic error about the format of the method, or procedure not found |
-| `-6` | `Invalid params`      | Generic error about the parameters provided for the procedure        |
+| `-6` | `Invalid params`      | Generic error about the parameters                                   |
 | `-7` | `Invalid context`     | Generic error about the format of the context                        |
 | `-8` | `Failed execution`    | Generic error when executing the procedure                           |
 
