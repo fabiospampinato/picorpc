@@ -2,6 +2,7 @@
 /* IMPORT */
 
 import createAbstractClient from '~/clients/abstract';
+import {deserialize, serialize} from '~/json';
 import type {IProcedures, IHttpClientOptions, IHttpClient} from '~/types';
 
 /* MAIN */
@@ -9,16 +10,14 @@ import type {IProcedures, IHttpClientOptions, IHttpClient} from '~/types';
 const createHttpClient = <T extends IProcedures> ( options: IHttpClientOptions ): IHttpClient<T> => {
 
   const {url} = options;
-  const serializer = options.serializer || JSON.stringify;
-  const deserializer = options.deserializer || JSON.parse;
+  const serializer = options.serializer || serialize;
+  const deserializer = options.deserializer || deserialize;
 
   return createAbstractClient<T> ({
     handler: async request => {
       const response = await fetch ( url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: serializer ( request )
       });
       const content = await response.text ();

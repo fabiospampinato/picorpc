@@ -14,7 +14,7 @@ import {VERSION} from '~/constants';
 import ResponseError from '~/objects/response_error';
 import ResponseSuccess from '~/objects/response_success';
 
-import {castError, isArray, isInteger, isObject, isString, isUndefined, isVersionCompatible} from '~/utils';
+import {castError, isInteger, isObject, isString, isUndefined, isVersionCompatible} from '~/utils';
 
 import type Response from '~/objects/response';
 import type {IProcedures, IAbstractServerOptions, IAbstractServer} from '~/types';
@@ -26,25 +26,11 @@ const createAbstractServer = <T extends IProcedures> ( options: IAbstractServerO
 
   const {procedures, handler} = options;
 
-  if ( procedures.hasOwnProperty ( 'batch' ) ) throw new Error ( 'The "batch" name is reserved for procedures' );
+  return {
 
-  async function handle ( requests: IRequest[] ): Promise<Response[] | Response>;
-  async function handle ( request: IRequest ): Promise<Response>;
-  async function handle ( requestOrRequests: IRequest[] | IRequest ) {
+    handle: async ( request: IRequest ): Promise<Response> => {
 
-    if ( !isObject ( requestOrRequests ) ) return new ResponseError ( handler, FALLBACK_RESPONSE_ID, ERROR_CODE_INVALID_REQUEST, ERROR_MESS_INVALID_REQUEST );
-
-    if ( isArray ( requestOrRequests ) ) {
-
-      const requests = requestOrRequests;
-
-      if ( !requests.length ) return new ResponseError ( handler, FALLBACK_RESPONSE_ID, ERROR_CODE_INVALID_REQUEST, ERROR_MESS_INVALID_REQUEST );
-
-      return await Promise.all ( requests.map ( handle ) );
-
-    } else {
-
-      const request = requestOrRequests;
+      if ( !isObject ( request ) ) return new ResponseError ( handler, FALLBACK_RESPONSE_ID, ERROR_CODE_INVALID_REQUEST, ERROR_MESS_INVALID_REQUEST );
 
       if ( !isString ( request.id ) ) return new ResponseError ( handler, FALLBACK_RESPONSE_ID, ERROR_CODE_INVALID_ID, ERROR_MESS_INVALID_ID );
 
@@ -79,9 +65,7 @@ const createAbstractServer = <T extends IProcedures> ( options: IAbstractServerO
 
     }
 
-  }
-
-  return { handle };
+  };
 
 };
 

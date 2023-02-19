@@ -37,8 +37,6 @@ type IResponse = IResponseSuccess | IResponseError;
 
 type IRequestHandler = ( request: IRequest ) => Promise<Response>;
 
-type IRequestsHandler = ( requests: IRequest[] ) => Promise<Response[] | Response>;
-
 type IResponseHandler = ( response: IResponse ) => void;
 
 /* TYPES - ABSTRACT */
@@ -54,13 +52,10 @@ type IAbstractServerOptions<T extends IProcedures> = {
 
 type IAbstractClient<T extends IProcedures> = {
   [Method in keyof T]: ( ...params: Parameters<T[Method]> ) => Request<ReturnType<T[Method]>>
-} & {
-  batch: ( requests: Request<unknown>[] ) => Request<Response[] | Response>
 };
 
 type IAbstractServer = {
-  handle ( requests: IRequest[] ): Promise<Response[] | Response>,
-  handle ( request: IRequest ): Promise<Response>
+  handle: ( request: IRequest ) => Promise<Response>
 };
 
 /* TYPES - MEMORY */
@@ -100,7 +95,7 @@ type IHttpServer = IAbstractServer & {
 
 /* EXPORT */
 
-export type {IProcedures, IRequest, IResponse, IRequestHandler, IRequestsHandler, IResponseHandler};
+export type {IProcedures, IRequest, IResponse, IRequestHandler, IResponseHandler};
 export type {IAbstractClientOptions, IAbstractServerOptions, IAbstractClient, IAbstractServer};
 export type {IMemoryClientOptions, IMemoryServerOptions, IMemoryClient, IMemoryServer};
 export type {IHttpClientOptions, IHttpServerOptions, IHttpClient, IHttpServer};

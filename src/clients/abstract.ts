@@ -3,7 +3,6 @@
 
 import {VERSION} from '~/constants';
 import Request from '~/objects/request';
-import Requests from '~/objects/requests';
 import {isString} from '~/utils';
 import type {IProcedures, IAbstractClientOptions, IAbstractClient} from '~/types';
 
@@ -14,7 +13,7 @@ const createAbstractClient = <T extends IProcedures> ( options: IAbstractClientO
   const {handler} = options;
 
   let client = Object.seal ( Object.freeze ( {} ) ) as IAbstractClient<T>; //TSC
-  let count = 0;
+  let id = 0n;
 
   return new Proxy ( client, {
 
@@ -22,28 +21,16 @@ const createAbstractClient = <T extends IProcedures> ( options: IAbstractClientO
 
       if ( !isString ( method ) ) throw new Error ( 'Invalid method' );
 
-      if ( method === 'batch' ) {
+      return ( ...params: unknown[] ) => {
 
-        return ( requests: Request[] ) => {
+        return new Request ( handler, {
+          version: VERSION,
+          id: String ( id += 1n ),
+          method,
+          params
+        });
 
-          return new Requests ( handler, requests );
-
-        };
-
-      } else {
-
-        return ( ...params: unknown[] ) => {
-
-          return new Request ( handler, {
-            version: VERSION,
-            id: String ( count += 1 ),
-            method,
-            params
-          });
-
-        };
-
-      }
+      };
 
     }
 

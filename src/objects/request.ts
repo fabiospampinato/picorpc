@@ -12,8 +12,8 @@ class Request<T> {
 
   /* VARIABLES */
 
-  private handler: IRequestHandler;
-  private request: IRequest;
+  protected handler: IRequestHandler;
+  protected request: IRequest;
 
   /* CONSTRUCTOR */
 

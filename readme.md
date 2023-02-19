@@ -2,7 +2,7 @@
 
 A tiny RPC library and spec, inspired by [JSON-RPC 2.0](https://www.jsonrpc.org/specification) and [tRPC](https://trpc.io).
 
-Check out the [spec](./spec.md) and the [example](//TODO).
+Check out the [spec](./spec.md).
 
 ## Install
 

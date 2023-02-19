@@ -7,10 +7,10 @@ import type {IResponse, IResponseHandler} from '~/types';
 
 class Response {
 
-  /* VARIABLE */
+  /* VARIABLES */
 
-  private handler: IResponseHandler
-  private response: IResponse;
+  protected handler: IResponseHandler
+  protected response: IResponse;
 
   /* CONSTRUCTOR */
 

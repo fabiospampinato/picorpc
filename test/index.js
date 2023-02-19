@@ -217,19 +217,6 @@ describe ( 'TinyRPC', () => {
 
     });
 
-    it ( 'errors on empty batch', async t => {
-
-      const {server} = createTestMemoryClient ();
-      const result = ( await server.handle ( [] ) ).valueOf ();
-
-      t.is ( result.version, '1.0.0' );
-      t.is ( result.id, '' );
-      t.is ( result.error.code, -1 );
-      t.is ( result.error.message, 'Invalid request' );
-      t.is ( result.result, undefined );
-
-    });
-
     it ( 'succeeds on valid request', async t => {
 
       const {server} = createTestMemoryClient ();
@@ -239,45 +226,6 @@ describe ( 'TinyRPC', () => {
       t.is ( result.id, 'foo' );
       t.is ( result.error, undefined );
       t.is ( result.result, 3 );
-
-    });
-
-    it ( 'succeeds on valid batch', async t => {
-
-      const {server} = createTestMemoryClient ();
-      const request1 = { version: '1.0.0', id: 'foo', method: 'sum', params: [1, 2] };
-      const request2 = { version: '1.0.0', id: 'bar', method: 'sum', params: [3, 4] };
-      const result = ( await server.handle ( [request1, request2] ) ).map ( result => result.valueOf () );
-
-      t.is ( result.length, 2 );
-      t.is ( result[0].version, '1.0.0' );
-      t.is ( result[0].id, 'foo' );
-      t.is ( result[0].error, undefined );
-      t.is ( result[0].result, 3 );
-      t.is ( result[1].version, '1.0.0' );
-      t.is ( result[1].id, 'bar' );
-      t.is ( result[1].error, undefined );
-      t.is ( result[1].result, 7 );
-
-    });
-
-    it ( 'succeeds on partially valid batch', async t => {
-
-      const {server} = createTestMemoryClient ();
-      const request1 = { version: '1.0.0', id: 'foo', method: 'sum', params: [1, 2] };
-      const request2 = { version: '1.0.0', id: 'bar', method: 'add', params: [3, 4] };
-      const result = ( await server.handle ( [request1, request2] ) ).map ( result => result.valueOf () );
-
-      t.is ( result.length, 2 );
-      t.is ( result[0].version, '1.0.0' );
-      t.is ( result[0].id, 'foo' );
-      t.is ( result[0].error, undefined );
-      t.is ( result[0].result, 3 );
-      t.is ( result[1].version, '1.0.0' );
-      t.is ( result[1].id, 'bar' );
-      t.is ( result[1].error.code, -5 );
-      t.is ( result[1].error.message, 'Invalid method' );
-      t.is ( result[1].result, undefined );
 
     });
 

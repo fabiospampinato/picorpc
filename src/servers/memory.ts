@@ -2,7 +2,7 @@
 /* IMPORT */
 
 import createAbstractServer from '~/servers/abstract';
-import {identity} from '~/utils';
+import {noop} from '~/utils';
 import type {IProcedures, IMemoryServerOptions, IMemoryServer} from '~/types';
 
 /* MAIN */
@@ -13,7 +13,7 @@ const createMemoryServer = <T extends IProcedures> ( options: IMemoryServerOptio
 
   return createAbstractServer<T> ({
     procedures,
-    handler: identity
+    handler: noop
   });
 
 };

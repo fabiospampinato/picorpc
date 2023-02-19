@@ -3,8 +3,9 @@
 
 import {Buffer} from 'node:buffer';
 import http from 'node:http';
+import {deserialize, serialize} from '~/json';
 import createAbstractServer from '~/servers/abstract';
-import {attempt, identity, isArray} from '~/utils';
+import {attempt, noop} from '~/utils';
 import type {IProcedures, IHttpServerOptions, IHttpServer} from '~/types';
 
 /* MAIN */
@@ -12,44 +13,49 @@ import type {IProcedures, IHttpServerOptions, IHttpServer} from '~/types';
 const createHttpServer = <T extends IProcedures> ( options: IHttpServerOptions<T> ): IHttpServer => {
 
   const {port, procedures} = options;
-  const serializer = options.serializer || JSON.stringify;
-  const deserializer = options.deserializer || JSON.parse;
+  const serializer = options.serializer || serialize;
+  const deserializer = options.deserializer || deserialize;
 
   /* MEMORY SERVER */
 
   const memoryServer = createAbstractServer<T> ({
     procedures,
-    handler: identity
+    handler: noop
   });
 
   /* HTTP SERVER */
 
   //TODO: Make this more robust, even though it isn't meant to interface with the internet directly
+  //TODO: Make this more configurable, maybe
+  //TODO: Maybe return a different status code if the response is an error, I'm not sure
 
-  const httpServer = http.createServer ( ( request, response ) => {
+  const httpServer = http.createServer ( ( req, res ) => {
     const chunks: Buffer[] = [];
-    request.on ( 'data', chunk => {
+    req.on ( 'data', chunk => {
       chunks.push ( chunk );
     });
-    request.on ( 'end', async () => {
+    req.on ( 'end', async () => {
       const body = Buffer.concat ( chunks ).toString ();
-      const requests = attempt ( () => deserializer ( body ), [] );
-      const responses = await memoryServer.handle ( requests );
-      const responsesSerialized = isArray ( responses ) ? responses.map ( response => serializer ( response.valueOf () ) ) : serializer ( responses.valueOf () );
-      response.statusCode = 200;
-      response.setHeader ( 'Content-Type', 'application/json' );
-      response.write ( responsesSerialized );
-      response.end ();
+      const request = attempt ( () => deserializer ( body ), {} );
+      const response = await memoryServer.handle ( request );
+      const responseSerialized = serializer ( response.valueOf () );
+      res.statusCode = 200;
+      res.setHeader ( 'Content-Type', 'application/json' );
+      res.write ( responseSerialized );
+      res.end ();
     });
-  }).listen ( port );
+  });
 
-  const close = () => {
-    httpServer.close ();
-  };
+  httpServer.listen ( port );
 
   /* RETURN */
 
-  return { ...memoryServer, close };
+  return {
+    ...memoryServer,
+    close: () => {
+      httpServer.close ();
+    }
+  };
 
 };
 

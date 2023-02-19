@@ -1,9 +1,6 @@
 
-//TODO: Support batching
 //TODO: Support context
-//TODO: Input validation
-//TODO: Output validation
-//TODO: Custom serialization
+//TODO: Make a bunch of demos, maybe
 
 /* IMPORT */
 

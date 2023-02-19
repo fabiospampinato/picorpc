@@ -102,6 +102,18 @@ const isVersionCompatible = ( version: string, supported: string ): boolean => {
 
 };
 
+const noop = (): void => {
+
+  return;
+
+};
+
+const rethrow = ( exception: unknown ): never => {
+
+  throw exception;
+
+};
+
 /* EXPORT */
 
-export {attempt, castError, identity, isArray, isError, isFinite, isInteger, isNumber, isObject, isString, isUndefined, isVersionCompatible};
+export {attempt, castError, identity, isArray, isError, isFinite, isInteger, isNumber, isObject, isString, isUndefined, isVersionCompatible, noop, rethrow};

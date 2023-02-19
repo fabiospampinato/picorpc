@@ -90,12 +90,6 @@ The following are all the "well known" reserved error codes, along with their re
 | `-6` | `Invalid params`      | Generic error about the parameters provided for the procedure        |
 | `-7` | `Failed execution`    | Generic error when executing the procedure                           |
 
-## Batching
-
-Sending multiple requests at once to the server is supported too, and it's done by sending multiple request objects in a single array, to which the server replies with an equal number of response objects in an array, potentially in a different order.
-
-If the request is malformed, or if there is any other problem that prevents the server from knowing how many requests are being performed in a single batch, or if the number of requeests is 0, then the server must respond with a single unsuccessful response object.
-
 ## Examples
 
 The following are some example requests and responses, to more practically illustrate how the protocol works.
@@ -137,32 +131,6 @@ Unsuccessful calls:
 
 --> { "version": "1.0.0", "id": "1", "method": "divide", "params": [0, 0] }
 <-- { "version": "1.0.0", "id": "1", "error": { "code": -7, "message": "Failed execution" } }
-```
-
-Successful batch call:
-
-```
---> [
-      { "version": "1.0.0", "id": "1", "method: "add", "params": [1, 2] },
-      { "version": "1.0.0", "id": "2", "method: "add", "params": [10, 20] }
-    ]
-<-- [
-      { "version": "1.0.0", "id": "2", "result": 30 },
-      { "version": "1.0.0", "id": "1", "result": 3 }
-    ]
-```
-
-Partially successful batch call:
-
-```
---> [
-      { "version": "1.0.0", "id": "1", "method: "divide", "params": [0, 0] },
-      { "version": "1.0.0", "id": "2", "method: "divide", "params": [10, 2] }
-    ]
-<-- [
-      { "version": "1.0.0", "id": "1", "error": { "code": -7, "message": "Failed execution" } },
-      { "version": "1.0.0", "id": "2", "result": 5 }
-    ]
 ```
 
 Malformed back call:
