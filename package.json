@@ -1,0 +1,31 @@
+{
+  "name": "tiny-rpc",
+  "repository": "github:fabiospampinato/tiny-rpc",
+  "description": "A tiny RPC library and spec, inspired by JSON-RPC 2.0 and tRPC.",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "tsex clean",
+    "compile": "tsex compile",
+    "compile:watch": "tsex compile --watch",
+    "test": "tsex test",
+    "test:watch": "tsex test --watch",
+    "prepublishOnly": "tsex prepare"
+  },
+  "keywords": [
+    "tiny",
+    "rpc",
+    "json",
+    "typescript"
+  ],
+  "devDependencies": {
+    "@types/node": "^18.14.0",
+    "fava": "^0.2.0",
+    "tsex": "^2.2.0",
+    "typescript": "^4.9.5"
+  }
+}
