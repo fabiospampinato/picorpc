@@ -3,7 +3,7 @@
 
 import {ERROR_CODE_FAILED_PROCEDURE_EXEC, ERROR_MESS_FAILED_PROCEDURE_EXEC} from '~/constants';
 import Error from '~/objects/error';
-import {identity} from '~/utils';
+import {identity, rethrow} from '~/utils';
 import type {IRequest, IRequestHandler} from '~/types';
 
 /* MAIN */
@@ -32,7 +32,7 @@ class Request<T> {
 
   }
 
-  then ( onSuccess: ( result: T ) => T = identity ): Promise<T> {
+  then ( onSuccess: ( result: T ) => T = identity, onError: ( error: unknown ) => never = rethrow ): Promise<T> {
 
     return this.handler ( this.request ).then ( response => response.valueOf () ).then ( response => {
 
@@ -51,7 +51,7 @@ class Request<T> {
 
       }
 
-    }).then ( onSuccess );
+    }).then ( onSuccess, onError );
 
   }
 

@@ -235,6 +235,24 @@ describe ( 'TinyRPC', () => {
 
     describe ( 'memory', it => {
 
+      it ( 'errors on invalid request', async t => {
+
+        const {client} = createTestMemoryClient ();
+
+        try {
+
+          await client.throwCustom ();
+
+        } catch ( error ) {
+
+          t.is ( error.code, 1 );
+          t.is ( error.message, 'Some custom error' );
+          t.is ( error.data, 'Some data' );
+
+        }
+
+      });
+
       it ( 'succeeds on valid request', async t => {
 
         const {client} = createTestMemoryClient ();
@@ -244,48 +262,29 @@ describe ( 'TinyRPC', () => {
 
       });
 
-      it ( 'succeeds on valid batch', async t => {
-
-        const {client} = createTestMemoryClient ();
-        const request1 = client.sum ( 1, 2 );
-        const request2 = client.sum ( 3, 4 );
-        const result = await client.batch ( [request1, request2] );
-
-        t.is ( result.length, 2 );
-        t.is ( result[0].version, '1.0.0' );
-        t.is ( result[0].id, 'foo' );
-        t.is ( result[0].error, undefined );
-        t.is ( result[0].result, 3 );
-        t.is ( result[1].version, '1.0.0' );
-        t.is ( result[1].id, 'bar' );
-        t.is ( result[1].error, undefined );
-        t.is ( result[1].result, 7 );
-
-      });
-
-      it.skip ( 'succeeds on partially valid batch', async t => {
-
-        const {client} = createTestMemoryClient ();
-        const request1 = { version: '1.0.0', id: 'foo', method: 'sum', params: [1, 2] };
-        const request2 = { version: '1.0.0', id: 'bar', method: 'add', params: [3, 4] };
-        const result = ( await server.handle ( [request1, request2] ) ).map ( result => result.valueOf () );
-
-        t.is ( result.length, 2 );
-        t.is ( result[0].version, '1.0.0' );
-        t.is ( result[0].id, 'foo' );
-        t.is ( result[0].error, undefined );
-        t.is ( result[0].result, 3 );
-        t.is ( result[1].version, '1.0.0' );
-        t.is ( result[1].id, 'bar' );
-        t.is ( result[1].error.code, -5 );
-        t.is ( result[1].error.message, 'Invalid method' );
-        t.is ( result[1].result, undefined );
-
-      });
-
     });
 
     describe ( 'http', it => {
+
+      it ( 'errors on invalid request', async t => {
+
+        const {client, server} = createTestHttpClient ();
+
+        try {
+
+          await client.throwCustom ();
+
+        } catch ( error ) {
+
+          t.is ( error.code, 1 );
+          t.is ( error.message, 'Some custom error' );
+          t.is ( error.data, 'Some data' );
+
+          server.close ();
+
+        }
+
+      });
 
       it ( 'succeeds on valid request', async t => {
 
@@ -295,45 +294,6 @@ describe ( 'TinyRPC', () => {
         t.is ( result, 3 );
 
         server.close ();
-
-      });
-
-      it.skip ( 'succeeds on valid batch', async t => {
-
-        const {client} = createTestHttpClient ();
-        const request1 = { version: '1.0.0', id: 'foo', method: 'sum', params: [1, 2] };
-        const request2 = { version: '1.0.0', id: 'bar', method: 'sum', params: [3, 4] };
-        const result = ( await server.handle ( [request1, request2] ) ).map ( result => result.valueOf () );
-
-        t.is ( result.length, 2 );
-        t.is ( result[0].version, '1.0.0' );
-        t.is ( result[0].id, 'foo' );
-        t.is ( result[0].error, undefined );
-        t.is ( result[0].result, 3 );
-        t.is ( result[1].version, '1.0.0' );
-        t.is ( result[1].id, 'bar' );
-        t.is ( result[1].error, undefined );
-        t.is ( result[1].result, 7 );
-
-      });
-
-      it.skip ( 'succeeds on partially valid batch', async t => {
-
-        const {client} = createTestHttpClient ();
-        const request1 = { version: '1.0.0', id: 'foo', method: 'sum', params: [1, 2] };
-        const request2 = { version: '1.0.0', id: 'bar', method: 'add', params: [3, 4] };
-        const result = ( await server.handle ( [request1, request2] ) ).map ( result => result.valueOf () );
-
-        t.is ( result.length, 2 );
-        t.is ( result[0].version, '1.0.0' );
-        t.is ( result[0].id, 'foo' );
-        t.is ( result[0].error, undefined );
-        t.is ( result[0].result, 3 );
-        t.is ( result[1].version, '1.0.0' );
-        t.is ( result[1].id, 'bar' );
-        t.is ( result[1].error.code, -5 );
-        t.is ( result[1].error.message, 'Invalid method' );
-        t.is ( result[1].result, undefined );
 
       });
 
