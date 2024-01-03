@@ -34,7 +34,9 @@ class Request<T> {
 
   then ( onSuccess: ( result: T ) => T = identity, onError: ( error: unknown ) => never = rethrow ): Promise<T> {
 
-    return this.handler ( this.request ).then ( response => response.valueOf () ).then ( response => {
+    return this.handler ( this.request ).then ( _response => {
+
+      const response = _response.valueOf ();
 
       if ( 'error' in response ) { // Error response
 

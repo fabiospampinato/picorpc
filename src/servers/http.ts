@@ -1,8 +1,9 @@
 
 /* IMPORT */
 
-import {Buffer} from 'node:buffer';
 import http from 'node:http';
+import concat from 'uint8-concat';
+import U8 from 'uint8-encoding';
 import {deserialize, serialize} from '~/json';
 import createAbstractServer from '~/servers/abstract';
 import {attempt, noop} from '~/utils';
@@ -30,12 +31,12 @@ const createHttpServer = <T extends IProcedures> ( options: IHttpServerOptions<T
   //TODO: Maybe return a different status code if the response is an error, I'm not sure
 
   const httpServer = http.createServer ( ( req, res ) => {
-    const chunks: Buffer[] = [];
+    const chunks: Uint8Array[] = [];
     req.on ( 'data', chunk => {
       chunks.push ( chunk );
     });
     req.on ( 'end', async () => {
-      const body = Buffer.concat ( chunks ).toString ();
+      const body = U8.decode ( concat ( chunks ) );
       const request = attempt ( () => deserializer ( body ), {} );
       const response = await memoryServer.handle ( request );
       const responseSerialized = serializer ( response.valueOf () );

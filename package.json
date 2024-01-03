@@ -23,6 +23,10 @@
     "json",
     "typescript"
   ],
+  "dependencies": {
+    "uint8-concat": "^1.0.0",
+    "uint8-encoding": "^2.0.0"
+  },
   "devDependencies": {
     "@types/node": "^20.4.9",
     "fava": "^0.2.1",
