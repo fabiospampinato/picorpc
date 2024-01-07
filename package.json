@@ -2,7 +2,7 @@
   "name": "picorpc",
   "repository": "github:fabiospampinato/picorpc",
   "description": "A tiny RPC library and spec, inspired by JSON-RPC 2.0 and tRPC.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
