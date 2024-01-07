@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import http from 'node:http';
+import {createServer} from 'node:http';
 import concat from 'uint8-concat';
 import U8 from 'uint8-encoding';
 import {deserialize, serialize} from '~/json';
@@ -30,7 +30,7 @@ const createHttpServer = <T extends IProcedures> ( options: IHttpServerOptions<T
   //TODO: Make this more configurable, maybe
   //TODO: Maybe return a different status code if the response is an error, I'm not sure
 
-  const httpServer = http.createServer ( ( req, res ) => {
+  const httpServer = createServer ( ( req, res ) => {
     const chunks: Uint8Array[] = [];
     req.on ( 'data', chunk => {
       chunks.push ( chunk );
