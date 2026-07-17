@@ -41,7 +41,7 @@ A request object has the following properties:
 
 ## Response
 
-The server must respond to the client's request with a response object, which must be either a sucessful or an unsuccessful one.
+The server must respond to the client's request with a response object, which must be either a successful or an unsuccessful one.
 
 Any response objects must have the following properties:
 
@@ -52,7 +52,7 @@ Any response objects must have the following properties:
 - `id`
   - The identifier for this response.
   - This property is required.
-  - This property must have the same value as the `id` property on the correspending request object, unless that property wasn't provided, in which case an empty string must be used instead.
+  - This property must have the same value as the `id` property on the corresponding request object, unless that property wasn't provided, in which case an empty string must be used instead.
 
 Additionally, a successful response object must have also the following properties:
 
@@ -70,7 +70,7 @@ Additionally, an unsuccessful response object must have also the following prope
     - `code`
       - An integer number, the identifier for the error.
       - This property is required.
-      - Negative integers are reserved, custom ones must be postive integers.
+      - Negative integers are reserved, custom ones must be positive integers.
     - `message`
       - A string describing the error.
       - This property is required.
@@ -99,7 +99,7 @@ The following are all the "well known" reserved error codes, along with their re
 
 The following are some example requests and responses, to more practically illustrate how the protocol works.
 
-Simple successfull call:
+Simple successful call:
 
 ```
 --> { "version": "1.0.0", "id": "1", "method: "add", "params": [1, 2] }
